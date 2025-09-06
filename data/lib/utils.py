@@ -1,5 +1,22 @@
 import json
 import data.lib.jsoncrypt as jsoncrypt
+import random
+
+def randgen():
+    symb = "A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z. B, C, D, F, G, H, J, K, L, M, N, P, Q, R, S, T, V, W, X, Y, Z".split(', ')
+    random.shuffle(symb)
+    link = ''
+    ints = random.randint(1000000, 9999999)
+    for i in range(0, 25):
+        if i % 3 == 0:
+            link += str(ints)[random.randint(0, 6)]
+        else:
+            _e = symb[random.randint(0, len(symb) - 1)]
+            if random.randint(0, 1) == 1:
+                link += _e.lower()
+            else:
+                link += _e
+    return link
 
 
 class UserData:
@@ -20,7 +37,7 @@ class UserData:
     def backup(self):
         if self._dct != json.load(open(self._fp, 'r')):
             print(f'[*] backup {self._fp}')
-            json.dump(self._dct, open(self._fp, 'w'))
+            json.dump(self._dct, open(self._fp, 'w'), indent=4)
             self._dct = json.load(open(self._fp, 'r'))
 
     def keys(self):

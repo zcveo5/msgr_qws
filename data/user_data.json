@@ -1,1 +1,19 @@
-{"theme": "hh", "locale": "ru", "username": "zcveo", "password": "zcveo5525", "addr": ["127.0.0.1", 5252], "debug": {"enabled": false, "widgets": false}, "contacts": ["1", "2", "3"]}
+{
+    "theme": "ai1",
+    "locale": "ru",
+    "username": "zcveo",
+    "password": "zcveo5525",
+    "addr": [
+        "127.0.0.1",
+        5252
+    ],
+    "debug": {
+        "enabled": true,
+        "widgets": false
+    },
+    "contacts": [
+        "1",
+        "2",
+        "3"
+    ]
+}

@@ -1,8 +1,9 @@
+"""Шифрует json-файлы"""
+
 import json
 from io import StringIO
 
 import data.lib.crypt as crypt
-
 
 def load(fp: open):
     ans = fp.read().split('!!&#*DATA*#$&!!')[-1].split('!!&$#*K*#$&!!')
@@ -21,6 +22,6 @@ def dump(obj: dict, fp: open):
 
 def _format(obj):
     ans = StringIO()
-    json.dump(obj, ans)
+    json.dump(obj, ans, indent=4)
     ans.seek(0)
     return ans.read()

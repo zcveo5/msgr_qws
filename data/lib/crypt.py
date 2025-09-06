@@ -1,5 +1,8 @@
 import random
 
+"""система шифрования"""
+
+
 SYMBOLS = list(
     "\nqwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
     "1234567890~!@#$%^&*()_+-=?><,./|\\\"'[]{}:; "
@@ -8,6 +11,7 @@ SYMBOLS = list(
 
 
 def shift_string(s: str, step: int) -> str:
+    """шифр цезаря"""
     total = len(SYMBOLS)
     result = []
 
@@ -22,6 +26,7 @@ def shift_string(s: str, step: int) -> str:
 
 
 def generate_salt() -> str:
+    """создает ключ"""
     shuffled = SYMBOLS.copy()
     random.shuffle(shuffled)
     substitution_map = {SYMBOLS[i]: shuffled[i] for i in range(len(SYMBOLS))}
@@ -33,12 +38,14 @@ def generate_salt() -> str:
 
 
 def _encrypt_key(key_string: str) -> str:
+    """защищает ключ"""
     step = random.randint(10, 99)
     encrypted = shift_string(key_string, step)
     return f"{step:02d}{encrypted}"
 
 
 def _decrypt_key(encrypted_key: str) -> dict:
+    """расшифровывает ключ"""
     step = int(encrypted_key[:2])
     rest = encrypted_key[2:]
     decrypted = shift_string(rest, -step)
@@ -46,6 +53,7 @@ def _decrypt_key(encrypted_key: str) -> dict:
 
 
 def encrypt(data: str, salt: str) -> str:
+    """шифрует данные"""
     salt_dict = _decrypt_key(salt)
     step_value = salt_dict.pop('stp')
     encrypted_chars = [salt_dict.get(char, '?') for char in data]
@@ -54,6 +62,7 @@ def encrypt(data: str, salt: str) -> str:
 
 
 def decrypt(data: str, salt: str) -> str:
+    """расшифровывает данные"""
     salt_dict = _decrypt_key(salt)
     step_value = salt_dict.pop('stp')
     unshifted = shift_string(data, -step_value)

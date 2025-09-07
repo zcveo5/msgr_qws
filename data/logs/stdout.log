@@ -1,10 +1,10 @@
-[17:09:07][stdout]Init stdout Log 
-[17:09:07][MAIN]Init MAIN Log 
-[17:09:07][QUEUE]Init QUEUE Log 
-[17:09:07][Interface]Init Interface Log 
-[17:09:07][UNK]Init UNK Log 
-[*] codec created[17:09:07][Interface][*] updating main menu state to Подключение... 
-
+[13:15:07][stdout]Init stdout Log 
+[13:15:07][MAIN]Init MAIN Log 
+[13:15:07][QUEUE]Init QUEUE Log 
+[13:15:07][Interface]Init Interface Log 
+[13:15:07][UNK]Init UNK Log 
+[*] codec created
+[13:15:07][Interface][*] updating main menu state to Подключение... 
 [ServerCom][0] started wrp
 [ServerCom][0] sending {'username': 'zcveo', 'password': 'zcveo5525', 'type': 'auth', 'req_id': 0}
 [ServerCom][0] received {'type': 'login', 'status': 'ok', 'req_id': 0}
@@ -12,7 +12,7 @@
 [*] completed
 {'type': 'login', 'status': 'ok', 'req_id': 0}
 [ssr {'type': 'get_chat_hist', 'req_id': 1}] {'h': "{'Hello Wolrd': {'users': ['zcveo', 'zcveo_2'], 'name': 'Hello Wolrd', 'link': 'hw2', 'is_public': True, 'msgs': [{'type': 'msg', 'to_cl': 'hw2', 'from': 'zcveo', 'text': 'asdf\\n', 'time': '18:10:00'}, {'from': 'zcveo', 'text': 'фывафывафывафываы\\n', 'time': '18:15:02'}], 'type': 'new_chat', 'req_id': 5}, 'hw2 private': {'users': ['zcveo'], 'name': 'hw2 private', 'link': '8C7z. b8Y5T1=1v5t1', 'is_public': False, 'msgs': [], 'type': 'new_chat', 'req_id': 24}}", 'req_id': 1}
-[17:09:08][Interface][*] updating main menu state to Обновление... downloading chat history... 
+[13:15:07][Interface][*] updating main menu state to Обновление... downloading chat history... 
 [ssr {'type': 'get_chat_hist', 'req_id': 1}] {'h': '!!$%&END', 'req_id': 2}
 [ssr {'type': 'get_chat_hist', 'req_id': 1}] result {"Hello Wolrd": {"users": ["zcveo", "zcveo_2"], "name": "Hello Wolrd", "link": "hw2", "is_public": true, "msgs": [{"type": "msg", "to_cl": "hw2", "from": "zcveo", "text": "asdf\n", "time": "18:10:00"}, {"from": "zcveo", "text": "фывафывафывафываы\n", "time": "18:15:02"}], "type": "new_chat", "req_id": 5}, "hw2 private": {"users": ["zcveo"], "name": "hw2 private", "link": "8C7z. b8Y5T1=1v5t1", "is_public": false, "msgs": [], "type": "new_chat", "req_id": 24}}
 [ServerCom][1] started wrp
@@ -20,16 +20,5 @@
 [ServerCom][1] received {'q': [], 'req_id': 1}
 [ServerCom][1] our answer is: {'q': [], 'req_id': 1}
 [*] completed
-[17:09:08][Interface][*] updating main menu state to Обновление... 
+[13:15:08][Interface][*] updating main menu state to Обновление... 
 None
-[17:09:09][Interface][*] updating main menu state to MSGR QWS 
-binding <<ComboboxSelected>> to P<function settings.<locals>.lc_update at 0x00000194820E8FE0>
-binding <<ComboboxSelected>> to P<function settings.<locals>.th_update at 0x00000194820E93A0>
-[ServerCom][2] started wrp
-[ServerCom][2] sending {'type': 'queue_get', 'req_id': 2}
-[ServerCom][2] received {'q': [], 'req_id': 2}
-[ServerCom][2] our answer is: {'q': [], 'req_id': 2}
-[*] completed
-[17:09:13][Interface][*] updating main menu state to Обновление... 
-None
-[17:09:14][Interface][*] updating main menu state to MSGR QWS 

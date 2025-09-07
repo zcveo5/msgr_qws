@@ -52,7 +52,7 @@ def settings():
         root.option_add('*Font', th.font, 'widgetDefault')
         root.configure(bg=th.bg)
         user_data['theme'] = path
-        root.configure_children(bg=th.bg, fg=th.fg, font=th.font, highlightcolor=th.fg)
+        root.configure_children(bg=th.bg, fg=th.fg, font=th.font, highlightcolor=th.fg, highlightbackground=th.fg)
 
     lc = ui.Combobox(settings_data_frame, values=os.listdir('./data/locale'), bg=th.bg, fg=th.fg)
     lc.entry.insert("end", locale.get('settings.locale_txt', 'Localization'))
@@ -131,11 +131,6 @@ def create_chat():
         - устанавливать тип чата (приватный/публичный)
         - создавать чат с выбранными параметрами
         """
-    win = show('chat adding')
-    win.pack_propagate(True)
-    Label(win, text='Add Users').pack()
-    contacts_select = ui.ListFrames(master=win)
-    contacts_vars = {}
     def create():
         req = {'type': 'create_chat', 'users': [], 'is_public': is_public, 'name': name_entry.get()}
         for _contact_name, _contact in contacts_vars.items():
@@ -147,6 +142,12 @@ def create_chat():
         print_adv(req)
 
         print_adv(client.communicate(req))
+
+    win = show('chat adding')
+    win.pack_propagate(True)
+    Label(win, text='Add Users').pack()
+    contacts_select = ui.ListFrames(master=win)
+    contacts_vars = {}
 
 
     for contact in client.communicate({'type': 'get_contacts'})['c']:
@@ -365,7 +366,50 @@ def build_ui():
         def back():
             top_menu_chat.pack_forget()
             load_chat('')
+        def chat_menu():
+            chat_back = chat
+            _w = show(f'Chat manage: {chat_back}')
+            available_actions = client.communicate({'type': 'chat_manage_get_my_actions', 'chat': chats[chat_back]['link']})['a']
+            if debug:
+                Label(_w, text='\n'.join(available_actions), justify='left').pack(anchor='nw')
+            _actions = ui.ListFrames(master=_w)
+
+            def exec_action(event):
+                def add():
+                    _invite_w.destroy()
+                    req = {'c': [], 'type': 'add_users', 'chat': chats[chat_back]['link']}
+                    for _name, _value in contacts_vars.items():
+                        if _value.get():
+                            req['c'].append(_name)
+                    if debug:
+                        showinfo('13', f'sent {req}')
+                    client.send(req)
+                print_adv(f'chat menu action: {event.widget.action_name}')
+                if event.widget.action_name == 'invite_users':
+                    _invite_w = show(f'Invite into {chat_back}')
+                    Label(_invite_w, text='Add Users').pack()
+                    contacts_select = ui.ListFrames(master=_invite_w)
+                    contacts_vars = {}
+
+                    for contact in client.communicate({'type': 'get_contacts'})['c']:
+                        contacts_vars[contact] = BooleanVar(master=_invite_w, value=False)
+                        _chb = Checkbutton(contacts_select.for_w, text=contact, variable=contacts_vars[contact])
+                        _chb.pack(anchor='nw')
+
+                    contacts_select.pack()
+                    Button(_invite_w, text='add', command=add).pack()
+
+
+            for i in available_actions:
+                _a = Button(_actions.for_w, text=i)
+                _a.action_name = i
+                _a.bind('<Button-1>', exec_action)
+                _a.pack(anchor='nw')
+            _actions.pack()
+
+
         Button(top_menu_chat, text='<--', command=back).place(x=0, y=0, relheight=1.0)
+        Button(top_menu_chat, text='Menu', command=chat_menu).place(relx=1.0, y=0, relheight=1.0, anchor='ne')
         top_menu_chat.pack(fill='x')
 
         send_part = Frame(highlightthickness=2)
@@ -374,7 +418,7 @@ def build_ui():
         def wrp():
             _msg = send_message()
             main_container.scroll_to_bottom()
-        Button(send_part, text='^\n|', command=wrp).pack(fill='y', expand=True, side='left')
+        Button(send_part, text='^\n|', command=wrp).pack(fill='y', expand=True, side='right')
 
         main_container = ui.ListFrames()
         main_container.pack(fill='both', expand=True, anchor='nw')
@@ -565,7 +609,7 @@ if __name__ == '__main__':
             if use_file:
                 with open(f'./data/logs/{_name}.log', 'w'):
                     pass
-                self._fl = open(f'./data/logs/{_name}.log', 'a')
+                self._fl = open(f'./data/logs/{_name}.log', 'a', errors='replace')
             else:
                 self._fl = None
             print_adv(f'Init {_name} Log', h=self)
@@ -687,10 +731,9 @@ if __name__ == '__main__':
     session_key = ''
 
     print_adv('[*] connecting to server')
-    if not user_data['addr']:
-        print_adv('[*] getting addr from git')
-        tmp = requests.get("https://raw.githubusercontent.com/zcveo5/sturdy-octo-rotary-phone/main/addr.txt").text.split('\n')[0].split(':')
-        user_data['addr'] = [tmp[0], int(tmp[1])]
+    print_adv('[*] getting addr from git')
+    tmp = requests.get("https://raw.githubusercontent.com/zcveo5/sturdy-octo-rotary-phone/main/addr.txt").text.split('\n')[0].split(':')
+    user_data['addr'] = [tmp[0], int(tmp[1])]
 
     client = com.Server(user_data['addr'][0], user_data['addr'][1], user_data['username'], user_data['password'])
 

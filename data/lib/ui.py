@@ -353,16 +353,18 @@ class Combobox:
         self._root_frame = tkinter.Frame(master, **kw)
         self._root_frame.pack_propagate(True)
 
-        self.entry = tkinter.Entry(self._root_frame, textvariable=self.var, state=state)
-        self.entry.pack(fill='y', expand=True, side='left')
-        self.btn = tkinter.Button(self._root_frame, text="▼", command=self.toggle_listbox)
-        self.btn.pack(fill='y', expand=True, side='right')
-        self.listbox = tkinter.Listbox(bg="white")
-
         if bg is None:
             bg = tkinter.Label()["background"]  # Берем значение по умолчанию
         if fg is None:
             fg = tkinter.Label()["foreground"]
+        if font is None:
+            font = tkinter.Label()["font"]
+
+        self.entry = tkinter.Entry(self._root_frame, textvariable=self.var, bg=bg, fg=fg, font=font)
+        self.entry.pack(fill='y', expand=True, side='left')
+        self.btn = tkinter.Button(self._root_frame, text="▼", command=self.toggle_listbox)
+        self.btn.pack(fill='y', expand=True, side='right')
+        self.listbox = tkinter.Listbox(bg="white")
 
         if bg is not None:
             self._root_frame.configure(bg=bg)

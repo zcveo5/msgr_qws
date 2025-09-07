@@ -1,3 +1,4 @@
+import base64
 import random
 
 """система шифрования"""
@@ -8,7 +9,6 @@ SYMBOLS = list(
     "1234567890~!@#$%^&*()_+-=?><,./|\\\"'[]{}:; "
     "йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ"
 )
-
 
 def shift_string(s: str, step: int) -> str:
     """шифр цезаря"""
@@ -58,7 +58,10 @@ def encrypt(data: str, salt: str) -> str:
     step_value = salt_dict.pop('stp')
     encrypted_chars = [salt_dict.get(char, '?') for char in data]
     result = ''.join(encrypted_chars)
-    return shift_string(result, step_value)
+    _r = shift_string(result, step_value)
+    #_r = base64.b64encode(_r.encode('utf-8'))
+    #_r = _r.decode('utf-8')
+    return _r
 
 
 def decrypt(data: str, salt: str) -> str:
@@ -68,4 +71,7 @@ def decrypt(data: str, salt: str) -> str:
     unshifted = shift_string(data, -step_value)
     reverse_map = {v: k for k, v in salt_dict.items()}
     decrypted_chars = [reverse_map.get(char, '?') for char in unshifted]
-    return ''.join(decrypted_chars)
+    _r = ''.join(decrypted_chars)
+    #_r = base64.b64decode(_r.encode('utf-8'))
+    #_r = _r.decode('utf-8')
+    return _r

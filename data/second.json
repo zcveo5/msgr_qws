@@ -1,1 +1,14 @@
-{"theme": "", "locale": "", "username": "zcveo_2", "password": "zcveo5522", "addr": ["127.0.0.1", 5252], "debug": {"enabled": false, "widgets": false}}
+{
+    "theme": "",
+    "locale": "",
+    "username": "zcveo_2",
+    "password": "zcveo5522",
+    "addr": [
+        "192.168.88.25",
+        5252
+    ],
+    "debug": {
+        "enabled": false,
+        "widgets": false
+    }
+}

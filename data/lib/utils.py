@@ -1,13 +1,18 @@
 import json
+import threading
+import time
+
 import data.lib.jsoncrypt as jsoncrypt
 import random
+from data.lib.printlib import print_adv
 
-def randgen():
-    symb = "A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z. B, C, D, F, G, H, J, K, L, M, N, P, Q, R, S, T, V, W, X, Y, Z".split(', ')
+
+def randgen(c=25):
+    symb = "A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z, B, C, D, F, G, H, J, K, L, M, N, P, Q, R, S, T, V, W, X, Y, Z".split(', ')
     random.shuffle(symb)
     link = ''
     ints = random.randint(1000000, 9999999)
-    for i in range(0, 25):
+    for i in range(0, c):
         if i % 3 == 0:
             link += str(ints)[random.randint(0, 6)]
         else:
@@ -36,7 +41,7 @@ class UserData:
 
     def backup(self):
         if self._dct != json.load(open(self._fp, 'r')):
-            print(f'[*] backup {self._fp}')
+            print_adv(f'[*] backup {self._fp}')
             json.dump(self._dct, open(self._fp, 'w'), indent=4)
             self._dct = json.load(open(self._fp, 'r'))
 
@@ -88,6 +93,21 @@ class EncryptedUserData(UserData):
 
     def backup(self):
         if self._dct != jsoncrypt.load(open(self._fp, 'r')):
-            print(f'[*] backup {self._fp}')
+            print_adv(f'[*] backup {self._fp}')
             jsoncrypt.dump(self._dct, open(self._fp, 'w+'))
             self._dct = jsoncrypt.load(open(self._fp, 'r'))
+
+
+def create_loop(target, s, *args):
+    def _loop_wrp(*_a):
+        while True:
+            target(*_a)
+            time.sleep(s)
+    _th = threading.Thread(target=_loop_wrp, daemon=True, args=args)
+
+
+def after(target, s, *args):
+    def _after_wrp(*_a):
+        time.sleep(s)
+        target(*_a)
+    _th = threading.Thread(target=_after_wrp, daemon=True, args=args)

@@ -1,7 +1,15 @@
 import sys
 import time
+from data.lib import env
 
-main_log = sys.stdout
+print_lib_root = sys.stdout
+
+def find_h(name):
+    try:
+        return env.env[f'LogPrintLib{name}']
+    except KeyError:
+        return sys.stdout
+
 
 def printin(s, h):
     """утилита для записи строки в stdout / stderr с добавлением перевода строки.
@@ -15,8 +23,10 @@ def printin(s, h):
 
 def print_adv(*s, h=None):
     if h is None:
-        h = main_log
+        h = print_lib_root
     _s = ''
     for i in s:
         _s += str(i) + ' '
+    if not _s.startswith('['):
+        _s = ' ' + _s
     printin(f'[{time.strftime("%H:%M:%S")}][{h.name}]{_s}', h)
